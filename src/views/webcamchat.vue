@@ -1,10 +1,8 @@
 <template>
-  <div>
+  <div id="wrapper">
     <div>
       <h1>Your video</h1>
       <video ref="localVideo"></video>
-    </div>
-    <div>
       <canvas ref="canvas"></canvas>
     </div>
     <div>
@@ -26,13 +24,21 @@ export default {
   props: {
     msg: String
   },
+  // data: function() {
+  //   return {
+  //     video: this.$refs.localVideo,
+  //     canvas: this.$refs.canvas,
+  //     img: this.$refs.externalVideo,
+  //     context: this.canvas.getContext("2d"),
+  //     audio: this.$refs.externalAudio
+  //   };
+  // },
   mounted: function() {
     const video = this.$refs.localVideo;
     const canvas = this.$refs.canvas;
     const img = this.$refs.externalVideo;
     const context = canvas.getContext("2d");
     const audio = this.$refs.externalAudio;
-    console.log(context);
 
     const constraintsVideo = {
       video: true,
@@ -86,16 +92,11 @@ export default {
     }
 
     function drawCanvas() {
-      context.drawImage(
-        video,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
     }
 
     function readCanvas() {
+      //const canvasdata = reader.readAsDataURL(video);
       const canvasdata = canvas.toDataURL("image/webp").split(",")[1];
 
       const chatMessage = {
@@ -112,7 +113,7 @@ export default {
         "data:image/webp;base64, " + JSON.parse(payload.body).content
       );
     }
-  }
+  },
   // methods: {
   //   main() {
   //     if (socket.readyState === 1) {
@@ -195,6 +196,10 @@ export default {
   //     );
   //   }
   // }
+  beforeDestroy() {
+    this.videoS
+    socket.close();
+  }
 };
 </script>
 
@@ -214,12 +219,19 @@ li {
 a {
   color: #42b983;
 }
-video, img{
-  width: 480px;
-  height: 360px;
+video,
+img {
+  width: 720px;
+  height: 540px;
   background-color: black;
+  image-resolution: from-image;
 }
 canvas {
   display: none;
+}
+#wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px;
 }
 </style>
