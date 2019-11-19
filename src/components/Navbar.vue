@@ -13,8 +13,7 @@
       "
       :extension-height="extensionHeight"
     >
-
-      <v-toolbar-title>{{username}}</v-toolbar-title>
+      <v-toolbar-title>{{ username }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -26,7 +25,7 @@
       </v-toolbar-items>
 
       <template v-if="$vuetify.breakpoint.smAndUp">
-        <v-btn icon>
+        <v-btn @click="logout" icon>
           <v-icon>mdi-power-settings</v-icon>
         </v-btn>
       </template>
@@ -35,6 +34,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+import router from "../router";
 export default {
   name: "Navbar",
   props: {
@@ -45,22 +46,40 @@ export default {
       username: null
     };
   },
-  mounted(){
-    try{
-      this.username = JSON.parse(sessionStorage.getItem("userInfo")).profile.name;
-    }
-    catch (e) {
+  mounted() {
+    try {
+      this.username = JSON.parse(
+        sessionStorage.getItem("userInfo")
+      ).profile.name;
+    } catch (e) {
       this.username = null;
     }
   },
   watch: {
-    '$route'(){
-      try{
-        this.username = JSON.parse(sessionStorage.getItem("userInfo")).profile.name;
-      }
-      catch (e) {
+    $route() {
+      try {
+        this.username = JSON.parse(
+          sessionStorage.getItem("userInfo")
+        ).profile.name;
+      } catch (e) {
         this.username = null;
       }
+    }
+  },
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(function() {
+          sessionStorage.clear();
+          router.push("/");
+          // Sign-out successful.
+        })
+        .catch(function(error) {
+          console.log(error);
+          // An error happened.
+        });
     }
   }
 };
