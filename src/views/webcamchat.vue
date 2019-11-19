@@ -26,14 +26,16 @@ export default {
   },
   // data: function() {
   //   return {
-  //     video: this.$refs.localVideo,
-  //     canvas: this.$refs.canvas,
-  //     img: this.$refs.externalVideo,
-  //     context: this.canvas.getContext("2d"),
-  //     audio: this.$refs.externalAudio
+  //     video: null,
+  //     canvas: null,
+  //     img: null,
+  //     context: null,
+  //     audio: null,
+  //     constraintsVideo: null,
+  //     contraintsAudio: null
   //   };
   // },
-  mounted: function() {
+  mounted() {
     const video = this.$refs.localVideo;
     const canvas = this.$refs.canvas;
     const img = this.$refs.externalVideo;
@@ -124,38 +126,6 @@ export default {
   //     }
   //   },
   //
-  //   setVideoAndAudio() {
-  //       const constraintsVideo = {
-  //           video: true,
-  //           audio: false
-  //       };
-  //
-  //       const contraintsAudio = {
-  //           video: false,
-  //           audio: true
-  //       };
-  //
-  //     navigator.mediaDevices
-  //       .getUserMedia(constraintsVideo)
-  //       .then(function(stream) {
-  //         this.video.srcObject = stream;
-  //         this.video.play();
-  //       })
-  //       .catch(function(err) {
-  //         console.log(err);
-  //       });
-  //
-  //     navigator.mediaDevices
-  //       .getUserMedia(contraintsAudio)
-  //       .then(function(stream) {
-  //         self.audio.srcObject = stream;
-  //         self.audio.play();
-  //       })
-  //       .catch(function(err) {
-  //         console.log(err);
-  //       });
-  //   },
-  //
   //   onOpen() {
   //     stompClient = Stomp.over(socket);
   //     stompClient.debug = null;
@@ -168,7 +138,6 @@ export default {
   //   },
   //
   //   drawCanvas() {
-  //     console.log(this.context);
   //     this.context.drawImage(
   //       this.video,
   //       0,
@@ -190,16 +159,16 @@ export default {
   //   },
   //
   //   getCanvasFromServer(payload) {
+  //     console.log("test");
   //     this.img.setAttribute(
   //       "src",
   //       "data:image/webp;base64, " + JSON.parse(payload.body).content
   //     );
   //   }
   // }
-  beforeDestroy() {
-    this.videoS
-    socket.close();
-  }
+  // beforeDestroy() {
+  //   socket.close();
+  // }
 };
 </script>
 
