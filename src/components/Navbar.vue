@@ -1,17 +1,6 @@
 <template>
   <div>
     <v-toolbar
-      :extended="extended"
-      :prominent="prominent"
-      :dense="dense"
-      :collapse="collapse"
-      :flat="flat"
-      :src="
-        bg
-          ? 'https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg'
-          : undefined
-      "
-      :extension-height="extensionHeight"
     >
       <v-toolbar-title>{{ username }}</v-toolbar-title>
 
@@ -19,14 +8,14 @@
 
       <v-toolbar-items>
         <v-btn to="/animeandmanga" text>Anime & manga</v-btn>
+        <v-btn to="/users" text>MAL users</v-btn>
         <v-btn to="/textchat" text>Textchat</v-btn>
         <v-btn to="/webcamchat" text>Videochat</v-btn>
-        <v-btn to="/users" text>MAL users</v-btn>
       </v-toolbar-items>
 
       <template v-if="$vuetify.breakpoint.smAndUp">
         <v-btn @click="logout" icon>
-          <v-icon>mdi-power-settings</v-icon>
+          <i class="fas fa-power-off"></i>
         </v-btn>
       </template>
     </v-toolbar>
