@@ -18,6 +18,21 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/webcamchat.vue")
+  },
+  {
+    path: "/animeandmanga",
+    name: "animeandmanga",
+    component: () => import("../views/AnimeAndManga.vue")
+  },
+  {
+    path: "/textchat",
+    name: "textchat",
+    component: () => import("../views/textchat.vue")
+  },
+  {
+    path: "/users",
+    name: "users",
+    component: () => import("../views/users.vue")
   }
 ];
 

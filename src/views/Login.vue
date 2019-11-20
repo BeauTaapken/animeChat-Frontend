@@ -33,9 +33,14 @@
 import firebase from "firebase";
 import router from "../router";
 export default {
+  beforeMount() {
+    this.sendToNextPage();
+  },
   methods: {
     login() {
-      var provider = new firebase.auth.GoogleAuthProvider();
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      const self = this;
 
       firebase
         .auth()
@@ -46,12 +51,7 @@ export default {
           const token = result.credential.accessToken;
           sessionStorage.setItem("userInfo", userInfo);
           sessionStorage.setItem("token", token);
-          const test = JSON.parse(sessionStorage.getItem("userInfo"));
-          console.log(test);
-
-          router.push("/webcamchat");
-          // The signed-in user info.
-          // ...
+          self.sendToNextPage();
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -67,6 +67,12 @@ export default {
           console.log(credential);
           // ...
         });
+    },
+
+    sendToNextPage() {
+      if (sessionStorage.getItem("token")) {
+        router.push("/animeandmanga");
+      }
     }
   }
 };

@@ -20,7 +20,7 @@ const socket = new SockJS("http://localhost:8081/camera");
 let stompClient = null;
 
 export default {
-  name: "HelloWorld",
+  name: "webcamchat",
   props: {
     msg: String
   },
@@ -115,7 +115,7 @@ export default {
         "data:image/webp;base64, " + JSON.parse(payload.body).content
       );
     }
-  },
+  }
   // methods: {
   //   main() {
   //     if (socket.readyState === 1) {
