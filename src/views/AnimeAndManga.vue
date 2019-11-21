@@ -26,8 +26,9 @@
           append-icon="fas fa-search"
           @click:append="searchManga"
           v-model="manga"
+          ref="mangaSearch"
         ></v-text-field>
-        <div class="fa-border static-height" id="manga"></div>
+        <div class="fa-border static-height" id="manga" ref="mangalocation"></div>
       </div>
     </div>
   </div>
@@ -53,9 +54,9 @@ export default {
   methods: {
     searchAnime() {
       const animeDiv = this.$refs.animelocation;
-      const animeSearch = this.$refs.animeSearch;
       while (animeDiv.firstChild) {
         animeDiv.removeChild(animeDiv.firstChild);
+
       }
       if (this.anime.length > 3) {
         this.request.open(
@@ -64,31 +65,64 @@ export default {
         );
         this.request.onreadystatechange = function() {
           if (this.readyState === 4) {
-            console.log("body:", this.response);
             for (let i = 0; i < 5; i++) {
               const anime = JSON.parse(this.response).results[i];
               const instance = new ComponentClass({
                 propsData: {
+                  animeOrManga: "anime",
                   title: anime.title,
                   description: anime.synopsis,
                   image: anime.image_url,
-                  url: anime.url
+                  url: anime.url,
+                  episodes: anime.episodes,
+                  rating: anime.rated,
+                  airing: anime.airing,
+                  score: anime.score,
+                  type: anime.type
                 }
               });
               instance.$mount();
               animeDiv.appendChild(instance.$el);
-
-              console.log(JSON.parse(this.response).results[i]);
             }
-            animeSearch.value = "";
           }
         };
         this.request.send();
       }
     },
     searchManga() {
-      if (this.manga !== null) {
-        console.log(this.manga);
+      const mangaDiv = this.$refs.mangalocation;
+      while (mangaDiv.firstChild) {
+        mangaDiv.removeChild(mangaDiv.firstChild);
+      }
+      if (this.manga.length > 3) {
+        this.request.open(
+                "GET",
+                "https://api.jikan.moe/v3/search/manga?q=" + this.manga + "&limit=5"
+        );
+        this.request.onreadystatechange = function() {
+          if (this.readyState === 4) {
+            for (let i = 0; i < 5; i++) {
+              const manga = JSON.parse(this.response).results[i];
+              const instance = new ComponentClass({
+                propsData: {
+                  animeOrManga: "manga",
+                  title: manga.title,
+                  description: manga.synopsis,
+                  image: manga.image_url,
+                  url: manga.url,
+                  episodes: manga.chapters,
+                  airing: manga.publishing,
+                  score: manga.score,
+                  type: manga.type,
+                  volumes: manga.volumes
+                }
+              });
+              instance.$mount();
+              mangaDiv.appendChild(instance.$el);
+            }
+          }
+        };
+        this.request.send();
       }
     }
   }
