@@ -11,8 +11,13 @@
           append-icon="fas fa-search"
           @click:append="searchAnime"
           v-model="anime"
+          ref="animeSearch"
         ></v-text-field>
-        <div class="fa-border static-height" id="anime"></div>
+        <div
+          class="fa-border static-height"
+          id="anime"
+          ref="animelocation"
+        ></div>
       </div>
       <div>
         <v-text-field
@@ -21,31 +26,103 @@
           append-icon="fas fa-search"
           @click:append="searchManga"
           v-model="manga"
+          ref="mangaSearch"
         ></v-text-field>
-        <div class="fa-border static-height" id="manga"></div>
+        <div class="fa-border static-height" id="manga" ref="mangalocation"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import AnimeMangaInstance from "../components/animeMangaInstance";
+import Vue from "vue";
+const ComponentClass = Vue.extend(AnimeMangaInstance);
+
 export default {
   name: "AnimeAndManga",
   data() {
     return {
       anime: null,
-      manga: null
+      manga: null,
+      request: null
     };
+  },
+  mounted() {
+    this.request = new XMLHttpRequest();
   },
   methods: {
     searchAnime() {
-      if (this.anime !== null) {
-        console.log(this.anime);
+      const animeDiv = this.$refs.animelocation;
+      while (animeDiv.firstChild) {
+        animeDiv.removeChild(animeDiv.firstChild);
+
+      }
+      if (this.anime.length > 3) {
+        this.request.open(
+          "GET",
+          "https://api.jikan.moe/v3/search/anime?q=" + this.anime + "&limit=5"
+        );
+        this.request.onreadystatechange = function() {
+          if (this.readyState === 4) {
+            for (let i = 0; i < 5; i++) {
+              const anime = JSON.parse(this.response).results[i];
+              const instance = new ComponentClass({
+                propsData: {
+                  animeOrManga: "anime",
+                  title: anime.title,
+                  description: anime.synopsis,
+                  image: anime.image_url,
+                  url: anime.url,
+                  episodes: anime.episodes,
+                  rating: anime.rated,
+                  airing: anime.airing,
+                  score: anime.score,
+                  type: anime.type
+                }
+              });
+              instance.$mount();
+              animeDiv.appendChild(instance.$el);
+            }
+          }
+        };
+        this.request.send();
       }
     },
     searchManga() {
-      if (this.manga !== null) {
-        console.log(this.manga);
+      const mangaDiv = this.$refs.mangalocation;
+      while (mangaDiv.firstChild) {
+        mangaDiv.removeChild(mangaDiv.firstChild);
+      }
+      if (this.manga.length > 3) {
+        this.request.open(
+                "GET",
+                "https://api.jikan.moe/v3/search/manga?q=" + this.manga + "&limit=5"
+        );
+        this.request.onreadystatechange = function() {
+          if (this.readyState === 4) {
+            for (let i = 0; i < 5; i++) {
+              const manga = JSON.parse(this.response).results[i];
+              const instance = new ComponentClass({
+                propsData: {
+                  animeOrManga: "manga",
+                  title: manga.title,
+                  description: manga.synopsis,
+                  image: manga.image_url,
+                  url: manga.url,
+                  episodes: manga.chapters,
+                  airing: manga.publishing,
+                  score: manga.score,
+                  type: manga.type,
+                  volumes: manga.volumes
+                }
+              });
+              instance.$mount();
+              mangaDiv.appendChild(instance.$el);
+            }
+          }
+        };
+        this.request.send();
       }
     }
   }
@@ -61,6 +138,7 @@ export default {
 }
 
 .static-height {
+  overflow-y: auto;
   height: 600px;
 }
 </style>
