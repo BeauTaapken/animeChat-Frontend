@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login d-flex justify-content-center">
     <button type="button" class="google-button" @click="login()">
       <span class="google-button__icon">
         <svg viewBox="0 0 366 372" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,18 @@ export default {
   font-weight: bold;
   font-family: "Roboto", arial, sans-serif;
 }
+.google-button{
+  margin-bottom: 10px;
+}
 button ~ button {
   margin-left: 20px;
 }
+  .login{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  div{
+    height: 100%;
+  }
 </style>

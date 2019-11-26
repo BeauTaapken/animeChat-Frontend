@@ -24,6 +24,11 @@ export default {
   props: {
     msg: String
   },
+  data: function() {
+    return {
+      username: null
+    };
+  },
   // data: function() {
   //   return {
   //     video: null,
@@ -41,6 +46,16 @@ export default {
     const img = this.$refs.externalVideo;
     const context = canvas.getContext("2d");
     const audio = this.$refs.externalAudio;
+
+    try {
+      this.username = JSON.parse(
+        sessionStorage.getItem("userInfo")
+      ).profile.name;
+    } catch (e) {
+      this.username = null;
+    }
+
+    const username = this.username;
 
     const constraintsVideo = {
       video: true,
@@ -74,6 +89,7 @@ export default {
 
     setInterval(main, 16);
     function main() {
+      console.log(username);
       if (socket.readyState === 1) {
         drawCanvas();
         readCanvas();
@@ -87,7 +103,8 @@ export default {
       stompClient.debug = null;
       stompClient.connect({}, function() {
         stompClient.subscribe(
-          "/topic/camera/" + "othertest",
+                //TODO change after plus to username of other user
+          "/topic/camera/" + username,
           getCanvasFromServer
         );
       });
@@ -103,17 +120,29 @@ export default {
 
       const chatMessage = {
         content: canvasdata,
-        sender: "othertest"
+        sender: username
       };
 
       stompClient.send("/api/frame", {}, JSON.stringify(chatMessage));
     }
 
     function getCanvasFromServer(payload) {
+      console.log("in payload");
       img.setAttribute(
         "src",
         "data:image/webp;base64, " + JSON.parse(payload.body).content
       );
+    }
+  },
+  watch: {
+    $route() {
+      try {
+        this.username = JSON.parse(
+          sessionStorage.getItem("userInfo")
+        ).profile.name;
+      } catch (e) {
+        this.username = null;
+      }
     }
   }
   // methods: {

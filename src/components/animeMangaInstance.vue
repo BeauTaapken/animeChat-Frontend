@@ -1,24 +1,23 @@
 <template>
   <div class="fa-border indigo darken-2 wrapper" @click="goToPage">
-    <!--      TODO set image left of text-->
     <div class="image">
       <v-img v-bind:src="image"></v-img>
     </div>
     <div class="content">
       <h1>{{ title }}</h1>
-      <span>{{ description }}</span>
+      <span v-if="description !== null">{{ description }}</span>
       <h2>Type: {{ type }}</h2>
       <h2 v-if="animeOrManga === 'anime'">Episodes: {{ episodes }}</h2>
       <h2 v-if="animeOrManga === 'manga'">Chapters: {{ episodes }}</h2>
         <h2 v-if="animeOrManga === 'manga'">Volumes: {{ volumes }}</h2>
-      <h2>score: {{ score }}</h2>
-      <h2 v-if="animeOrManga === 'anime'">Rating: {{ rating }}</h2>
-      <h2 v-if="animeOrManga === 'anime'">
+      <h2 v-if="score !== null">score: {{ score }}</h2>
+      <h2 v-if="animeOrManga === 'anime' && rating !== null">Rating: {{ rating }}</h2>
+      <h2 v-if="animeOrManga === 'anime' && airing !== null">
         Airing:
         <i v-if="airing" class="fas fa-check greenColor"></i>
         <i v-else class="fas fa-times redColor"></i>
       </h2>
-      <h2 v-else>
+      <h2 v-if="animeOrManga === 'manga' && airing !== null">
         Publishing:
         <i v-if="airing" class="fas fa-check greenColor"></i>
         <i v-else class="fas fa-times redColor"></i>
@@ -42,38 +41,43 @@ export default {
     },
     description: {
       type: String,
-      required: true,
-      default: "something went wrong"
+      default: null
     },
     image: {
       type: String,
-      required: true
+      required: true,
+      default: null
     },
     url: {
       type: String,
-      required: true
+      required: true,
+      default: null
     },
     episodes: {
       type: Number,
-      required: true
+      required: true,
+      default: null
     },
     rating: {
-      type: String
+      type: String,
+      default: null
     },
     airing: {
       type: Boolean,
-      required: true
+      default: null
     },
     score: {
       type: Number,
-      required: true
+      default: null
     },
     type: {
       type: String,
-      required: true
+      required: true,
+      default: null
     },
       volumes: {
-        type: Number
+        type: Number,
+        default: null
       }
   },
   methods: {
