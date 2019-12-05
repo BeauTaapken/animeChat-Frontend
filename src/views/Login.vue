@@ -33,8 +33,16 @@
 import firebase from "firebase";
 import router from "../router";
 export default {
+  data() {
+    return {
+      request: null
+    };
+  },
   beforeMount() {
     this.sendToNextPage();
+  },
+  mounted(){
+    this.request = new XMLHttpRequest();
   },
   methods: {
     login() {
@@ -51,6 +59,7 @@ export default {
           const token = result.credential.accessToken;
           sessionStorage.setItem("userInfo", userInfo);
           sessionStorage.setItem("token", token);
+          self.addToDatabase();
           self.sendToNextPage();
         })
         .catch(function(error) {
@@ -73,6 +82,26 @@ export default {
       if (sessionStorage.getItem("token")) {
         router.push("/animeandmanga");
       }
+    },
+
+    addToDatabase() {
+      let u;
+      try {
+        u = JSON.parse(
+                sessionStorage.getItem("userInfo")
+        ).profile;
+      } catch (e) {
+        u = null;
+      }
+      const jsonUser = {
+        email: u.email,
+        name: u.name,
+        imgUrl: u.picture
+      };
+
+      this.request.open("POST", "http://localhost:8082/friend/adduser");
+      this.request.setRequestHeader("Content-Type", "text/plain");
+      this.request.send(JSON.stringify(jsonUser));
     }
   }
 };

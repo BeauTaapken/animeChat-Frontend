@@ -10,6 +10,7 @@
         <v-btn to="/animeandmanga" text>Anime & manga</v-btn>
         <v-btn to="/users" text>MAL users</v-btn>
         <v-btn to="/textchat" text>Textchat</v-btn>
+        <v-btn to="/searchfriends" text>Search friends</v-btn>
         <v-btn to="/webcamchat" text>Videochat</v-btn>
       </v-toolbar-items>
 
@@ -33,7 +34,7 @@ export default {
   data() {
     return {
       username: null
-    };
+  };
   },
   mounted() {
     try {
