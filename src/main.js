@@ -27,6 +27,8 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+export const eventBus = new Vue();
+
 new Vue({
   router,
   store,
