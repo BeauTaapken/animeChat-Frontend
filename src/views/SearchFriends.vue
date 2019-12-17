@@ -32,11 +32,6 @@ export default {
     }
     this.findNonFriends();
   },
-    // created() {
-    //     eventBus.$on("reloadFriendlist", () => {
-    //         this.findNonFriends();
-    //     });
-    // },
   watch: {
     $route() {
       try {

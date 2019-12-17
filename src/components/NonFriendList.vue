@@ -1,5 +1,5 @@
 <template>
-  <div class="fa-border indigo darken-2 wrapper align-center" @click="goToPage">
+  <div class="fa-border indigo darken-2 wrapper align-center" v-if="!added">
     <div class="image">
       <v-img v-bind:src="image" class="imageHeight"></v-img>
     </div>
@@ -7,13 +7,12 @@
       <span>{{ name }}</span>
     </div>
     <div>
-      <v-btn @click="addFriend(friendMail), refreshList">Add as friend</v-btn>
+      <v-btn @click="addFriend(friendMail), hideObject()">Add as friend</v-btn>
     </div>
   </div>
 </template>
 
 <script>
-// import {eventBus} from "../main.js";
 export default {
   name: "NonFriendList",
   props: {
@@ -33,7 +32,8 @@ export default {
   data() {
     return {
       email: null,
-      request: null
+      request: null,
+      added: false
     };
   },
   mounted() {
@@ -62,16 +62,20 @@ export default {
         friend: friendEmail
       };
 
-      console.log(friend);
-
       this.request.open("POST", "http://localhost:8082/friend/addfriend");
       this.request.setRequestHeader("Content-Type", "text/plain");
+      this.request.onreadystatechange = function() {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+              console.log("Delete this object")
+          }
+        }
+      };
       this.request.send(JSON.stringify(friend));
-    }
-
-    // refreshList() {
-    //     eventBus.$emit('reloadFriendList');
-    // }
+    },
+      hideObject(){
+        this.added = true;
+      }
   }
 };
 </script>

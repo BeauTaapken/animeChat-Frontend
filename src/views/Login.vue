@@ -99,7 +99,7 @@ export default {
         imgUrl: u.picture
       };
 
-      this.request.open("POST", "http://localhost:8082/friend/adduser");
+      this.request.open("POST", "http://localhost:8082/user/adduser");
       this.request.setRequestHeader("Content-Type", "text/plain");
       this.request.send(JSON.stringify(jsonUser));
     }
