@@ -62,7 +62,7 @@ export default {
         friend: friendEmail
       };
 
-      this.request.open("POST", "https://192.168.1.242:8082/friend/addfriend");
+      this.request.open("POST", "https://localhost:8082/friend/addfriend");
       this.request.setRequestHeader("Content-Type", "text/plain");
       this.request.onreadystatechange = function() {
         if (this.readyState === 4) {

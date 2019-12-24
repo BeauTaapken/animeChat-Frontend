@@ -46,7 +46,7 @@ export default {
       const nonFriendDiv = this.$refs.nonFriendLocation;
       this.request.open(
         "GET",
-        "https://192.168.1.242:8082/friend/findnonfriends/" + this.email
+        "https://localhost:8082/friend/findnonfriends/" + this.email
       );
       this.request.onreadystatechange = function() {
         if (this.readyState === 4) {

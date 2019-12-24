@@ -17,7 +17,7 @@
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-const socket = new SockJS("https://192.168.1.242:8081/chat");
+const socket = new SockJS("https://localhost:8081/chat");
 let stompClient = null;
 
 export default {
