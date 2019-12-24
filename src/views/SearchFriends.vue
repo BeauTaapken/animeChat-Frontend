@@ -26,7 +26,7 @@ export default {
   mounted() {
     this.request = new XMLHttpRequest();
     try {
-      this.email = JSON.parse(sessionStorage.getItem("userInfo")).profile.email;
+      this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
     } catch (e) {
       this.email = null;
     }
@@ -35,9 +35,7 @@ export default {
   watch: {
     $route() {
       try {
-        this.email = JSON.parse(
-          sessionStorage.getItem("userInfo")
-        ).profile.email;
+        this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
       } catch (e) {
         this.email = null;
       }
@@ -48,7 +46,7 @@ export default {
       const nonFriendDiv = this.$refs.nonFriendLocation;
       this.request.open(
         "GET",
-        "http://localhost:8082/friend/findnonfriends/" + this.email
+        "https://192.168.1.242:8082/friend/findnonfriends/" + this.email
       );
       this.request.onreadystatechange = function() {
         if (this.readyState === 4) {

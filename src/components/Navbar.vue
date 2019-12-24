@@ -38,9 +38,7 @@ export default {
   },
   mounted() {
     try {
-      this.username = JSON.parse(
-        sessionStorage.getItem("userInfo")
-      ).profile.name;
+      this.username = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.name;
     } catch (e) {
       this.username = null;
     }
@@ -48,9 +46,7 @@ export default {
   watch: {
     $route() {
       try {
-        this.username = JSON.parse(
-          sessionStorage.getItem("userInfo")
-        ).profile.name;
+        this.username = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.name;
       } catch (e) {
         this.username = null;
       }

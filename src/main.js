@@ -8,6 +8,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
 library.add(faUserSecret);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

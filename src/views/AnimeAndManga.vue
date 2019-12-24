@@ -47,9 +47,9 @@ export default {
   name: "AnimeAndManga",
   data() {
     return {
-      anime: null,
-      manga: null,
-      request: null
+      anime: "",
+      manga: "",
+      request: ""
     };
   },
   mounted() {

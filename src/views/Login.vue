@@ -32,6 +32,7 @@
 <script>
 import firebase from "firebase";
 import router from "../router";
+
 export default {
   data() {
     return {
@@ -55,10 +56,11 @@ export default {
         .signInWithPopup(provider)
         .then(function(result) {
           // This gives you a Google Access Token. You can use it to access the Google API.
-          const userInfo = JSON.stringify(result.additionalUserInfo);
-          const token = result.credential.accessToken;
-          sessionStorage.setItem("userInfo", userInfo);
-          sessionStorage.setItem("token", token);
+          const encodedUserInfo = btoa(JSON.stringify(result.additionalUserInfo));
+          const encodedToken = btoa(JSON.stringify(result.credential));
+
+          sessionStorage.setItem("userInfo", encodedUserInfo);
+          sessionStorage.setItem("token", encodedToken);
           self.addToDatabase();
           self.sendToNextPage();
         })
@@ -88,8 +90,9 @@ export default {
       let u;
       try {
         u = JSON.parse(
-                sessionStorage.getItem("userInfo")
-        ).profile;
+                atob(
+                  sessionStorage.getItem("userInfo")
+        )).profile;
       } catch (e) {
         u = null;
       }
@@ -99,7 +102,7 @@ export default {
         imgUrl: u.picture
       };
 
-      this.request.open("POST", "http://localhost:8082/user/adduser");
+      this.request.open("POST", "https://192.168.1.242:8082/user/adduser");
       this.request.setRequestHeader("Content-Type", "text/plain");
       this.request.send(JSON.stringify(jsonUser));
     }

@@ -39,7 +39,7 @@ export default {
   mounted() {
     this.request = new XMLHttpRequest();
     try {
-      this.email = JSON.parse(sessionStorage.getItem("userInfo")).profile.email;
+      this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
     } catch (e) {
       this.email = null;
     }
@@ -47,11 +47,11 @@ export default {
   watch: {
     $route() {
       try {
-        this.email = JSON.parse(
-          sessionStorage.getItem("userInfo")
-        ).profile.email;
+        this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
       } catch (e) {
         this.email = null;
+        this.idtoken = null;
+        this.token = null;
       }
     }
   },
@@ -62,20 +62,20 @@ export default {
         friend: friendEmail
       };
 
-      this.request.open("POST", "http://localhost:8082/friend/addfriend");
+      this.request.open("POST", "https://192.168.1.242:8082/friend/addfriend");
       this.request.setRequestHeader("Content-Type", "text/plain");
       this.request.onreadystatechange = function() {
         if (this.readyState === 4) {
           if (this.status === 200) {
-              console.log("Delete this object")
+            console.log("Delete this object");
           }
         }
       };
       this.request.send(JSON.stringify(friend));
     },
-      hideObject(){
-        this.added = true;
-      }
+    hideObject() {
+      this.added = true;
+    }
   }
 };
 </script>

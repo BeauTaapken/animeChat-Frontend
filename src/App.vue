@@ -17,10 +17,6 @@ export default {
     Navbar
   },
 
-  // data: () => ({
-  //   //
-  // })
-
   data() {
     return {
       username: null,
