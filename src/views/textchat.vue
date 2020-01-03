@@ -29,19 +29,40 @@ export default {
       textchat: null
     };
   },
+  watch: {
+    $route() {
+      stompClient.disconnect(function(){
+        window.alert("disconnected from textchat")
+      })
+    }
+  },
   mounted() {
-    this.textchat = this.$refs.textChat;
-    this.connect();
+    try {
+      this.username = JSON.parse(
+              atob(sessionStorage.getItem("userInfo"))
+      ).profile.name;
+    } catch (e) {
+      this.username = null;
+    }
+
+    if(stompClient == null){
+      this.textchat = this.$refs.textChat;
+      this.connect();
+    }
   },
   methods: {
+    disconnect(){
+
+    },
+
     connect() {
-      try {
-        this.username = JSON.parse(
-          atob(sessionStorage.getItem("userInfo"))
-        ).profile.name;
-      } catch (e) {
-        this.username = null;
-      }
+      // try {
+      //   this.username = JSON.parse(
+      //     atob(sessionStorage.getItem("userInfo"))
+      //   ).profile.name;
+      // } catch (e) {
+      //   this.username = null;
+      // }
       if (this.username) {
         stompClient = Stomp.over(socket);
         stompClient.connect({}, this.onConnected, this.onError);
