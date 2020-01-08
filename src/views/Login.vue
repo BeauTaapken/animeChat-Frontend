@@ -103,7 +103,8 @@ export default {
       };
 
       this.request.open("POST", "https://localhost:8082/user/adduser");
-      this.request.setRequestHeader("Content-Type", "text/plain");
+      this.request.setRequestHeader("Accept", "application/json");
+      this.request.setRequestHeader("Content-type", "application/json");
       this.request.send(JSON.stringify(jsonUser));
     }
   }

@@ -2,7 +2,7 @@
   <div id="flexbox">
     <h1>textchat</h1>
     <div id="textChat" ref="textChat"></div>
-    <v-footer>
+    <v-bottom-navigation>
       <v-text-field
         id="messageInput"
         placeholder="Type a message"
@@ -10,7 +10,7 @@
         @click:append="sendMessage"
         v-model="content"
       ></v-text-field>
-    </v-footer>
+    </v-bottom-navigation>
   </div>
 </template>
 
@@ -112,6 +112,13 @@ export default {
       messageElement.appendChild(textElement);
 
       this.textchat.appendChild(messageElement);
+
+      this.updateScroll();
+    },
+
+    updateScroll(){
+      let element = document.getElementById("textChat");
+      element.scrollTop = element.scrollHeight;
     }
   },
   beforeDestroy() {
@@ -121,5 +128,10 @@ export default {
 </script>
 
 <style scoped>
-
+  #textChat{
+    overflow-y: scroll;
+    height: 795px;
+    /*display: flex;*/
+    /*flex-direction: column-reverse;*/
+  }
 </style>

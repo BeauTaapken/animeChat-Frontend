@@ -61,9 +61,9 @@ export default {
         user: this.email,
         friend: friendEmail
       };
-
       this.request.open("POST", "https://localhost:8082/friend/addfriend");
-      this.request.setRequestHeader("Content-Type", "text/plain");
+      this.request.setRequestHeader("Accept", "application/json");
+      this.request.setRequestHeader("Content-type", "application/json");
       this.request.onreadystatechange = function() {
         if (this.readyState === 4) {
           if (this.status === 200) {
