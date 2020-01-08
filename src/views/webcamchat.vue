@@ -14,7 +14,7 @@
       <v-col cols="5">
         <div>
           <h1>Other video</h1>
-          <img ref="externalVideo" />
+          <img ref="externalVideo" alt="Other users video"/>
           <audio ref="externalAudio"></audio>
         </div>
       </v-col>

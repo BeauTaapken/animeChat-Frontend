@@ -14,13 +14,13 @@
       <h2 v-if="animeOrManga === 'anime' && rating !== null">Rating: {{ rating }}</h2>
       <h2 v-if="animeOrManga === 'anime' && airing !== null">
         Airing:
-        <i v-if="airing" class="fas fa-check greenColor"></i>
-        <i v-else class="fas fa-times redColor"></i>
+        <span v-if="airing" class="fas fa-check greenColor"></span>
+        <span v-else class="fas fa-times redColor"></span>
       </h2>
       <h2 v-if="animeOrManga === 'manga' && airing !== null">
         Publishing:
-        <i v-if="airing" class="fas fa-check greenColor"></i>
-        <i v-else class="fas fa-times redColor"></i>
+        <span v-if="airing" class="fas fa-check greenColor"></span>
+        <span v-else class="fas fa-times redColor"></span>
       </h2>
     </div>
   </div>

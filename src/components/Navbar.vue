@@ -16,7 +16,7 @@
 
       <template v-if="$vuetify.breakpoint.smAndUp">
         <v-btn @click="logout" icon>
-          <i class="fas fa-power-off"></i>
+          <span class="fas fa-power-off"></span>
         </v-btn>
       </template>
     </v-toolbar>
