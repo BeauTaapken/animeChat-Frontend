@@ -1,23 +1,34 @@
 <template>
   <div id="wrapper">
-    <div id="friends" ref="friendsLocation"></div>
-    <div>
-      <h1>Your video</h1>
-      <video ref="localVideo"></video>
-      <canvas ref="canvas"></canvas>
-    </div>
-    <div>
-      <h1>Other video</h1>
-      <img ref="externalVideo" />
-      <audio ref="externalAudio"></audio>
-    </div>
+    <v-row>
+      <v-col cols="2">
+        <div id="friends" ref="friendsLocation"></div>
+      </v-col>
+      <v-col cols="5">
+        <div>
+          <h1>Your video</h1>
+          <video ref="localVideo"></video>
+          <canvas ref="canvas"></canvas>
+        </div>
+      </v-col>
+      <v-col cols="5">
+        <div>
+          <h1>Other video</h1>
+          <img ref="externalVideo" />
+          <audio ref="externalAudio"></audio>
+        </div>
+      </v-col>
+      <v-col cols="2">
+
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-const socket = new SockJS("https://localhost:8081/chat");
+let socket = null;
 let stompClient = null;
 
 export default {
@@ -37,7 +48,6 @@ export default {
     };
   },
   mounted() {
-
     this.video = this.$refs.localVideo;
     this.canvas = this.$refs.canvas;
     this.img = this.$refs.externalVideo;
@@ -77,19 +87,6 @@ export default {
       });
 
   },
-  // watch: {
-  //   $route() {
-  //     this.request = new XMLHttpRequest();
-  //     try {
-  //       this.username = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.name;
-  //       this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
-  //     } catch (e) {
-  //       this.username = null;
-  //       this.email = null;
-  //     }
-  //     this.loadFriends();
-  //   }
-  // },
   methods: {
     main() {
       if (socket.readyState === 1) {
@@ -99,8 +96,11 @@ export default {
     },
 
     onOpen(otherUser) {
+      if(stompClient != null){
+        stompClient.disconnect();
+      }
       const self = this;
-      // const username = this.username;
+      socket = new SockJS("https://localhost:8081/chat");
       stompClient = Stomp.over(socket);
       stompClient.debug = null;
       stompClient.connect({}, function() {
@@ -112,7 +112,6 @@ export default {
               "data:image/webp;base64, " + JSON.parse(payload.body).content
             );
           }
-          // getCanvasFromServer()
         );
       });
       setInterval(this.main, 16);
@@ -147,7 +146,6 @@ export default {
         "https://localhost:8082/friend/findfriends/" + self.email
       );
       this.request.onreadystatechange = function() {
-        console.log("ready");
         if (this.readyState === 4) {
           if (this.status === 200) {
             const friendArray = JSON.parse(this.response);
@@ -166,6 +164,15 @@ export default {
       };
       this.request.send();
     },
+    disconnect(){
+      this.video.srcObject = null;
+      stompClient.disconnect();
+    }
+  },
+  beforeDestroy() {
+    if(stompClient != null){
+      this.disconnect();
+    }
   }
 };
 </script>
@@ -186,20 +193,20 @@ li {
 a {
   color: #42b983;
 }
-video,
+video {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
 img {
-  width: 720px;
-  height: 540px;
+  width: 640px;
+  height: 480px;
   background-color: black;
   image-resolution: from-image;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 canvas {
   display: none;
-}
-#wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 5px;
 }
 
 #friends {

@@ -93,6 +93,10 @@ export default {
           }
         };
         this.request.send();
+      } else {
+        window.alert(
+          "You need to have a minimum  of 4 characters in the search box"
+        );
       }
     },
     searchManga() {
@@ -132,6 +136,10 @@ export default {
           }
         };
         this.request.send();
+      } else {
+        window.alert(
+          "You need to have a minimum  of 4 characters in the search box"
+        );
       }
     }
   }

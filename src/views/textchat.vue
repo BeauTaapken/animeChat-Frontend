@@ -17,7 +17,7 @@
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-const socket = new SockJS("https://localhost:8081/chat");
+let socket = null;
 let stompClient = null;
 
 export default {
@@ -29,17 +29,10 @@ export default {
       textchat: null
     };
   },
-  watch: {
-    $route() {
-      stompClient.disconnect(function(){
-        window.alert("disconnected from textchat")
-      })
-    }
-  },
   mounted() {
     try {
       this.username = JSON.parse(
-              atob(sessionStorage.getItem("userInfo"))
+        atob(sessionStorage.getItem("userInfo"))
       ).profile.name;
     } catch (e) {
       this.username = null;
@@ -52,18 +45,13 @@ export default {
   },
   methods: {
     disconnect(){
-
+      stompClient.disconnect();
+      stompClient = null;
     },
 
     connect() {
-      // try {
-      //   this.username = JSON.parse(
-      //     atob(sessionStorage.getItem("userInfo"))
-      //   ).profile.name;
-      // } catch (e) {
-      //   this.username = null;
-      // }
       if (this.username) {
+        socket = new SockJS("https://localhost:8081/chat");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, this.onConnected, this.onError);
       }
@@ -125,18 +113,13 @@ export default {
 
       this.textchat.appendChild(messageElement);
     }
+  },
+  beforeDestroy() {
+    this.disconnect();
   }
 };
 </script>
 
 <style scoped>
-#flexbox {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
 
-#textChat {
-  flex-grow: 0.93;
-}
 </style>

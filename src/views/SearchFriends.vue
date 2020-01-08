@@ -26,7 +26,9 @@ export default {
   mounted() {
     this.request = new XMLHttpRequest();
     try {
-      this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
+      this.email = JSON.parse(
+        atob(sessionStorage.getItem("userInfo"))
+      ).profile.email;
     } catch (e) {
       this.email = null;
     }
@@ -35,7 +37,9 @@ export default {
   watch: {
     $route() {
       try {
-        this.email = JSON.parse(atob(sessionStorage.getItem("userInfo"))).profile.email;
+        this.email = JSON.parse(
+          atob(sessionStorage.getItem("userInfo"))
+        ).profile.email;
       } catch (e) {
         this.email = null;
       }
@@ -56,9 +60,9 @@ export default {
               const friend = nonFriendArray[i];
               const instance = new ComponentClass({
                 propsData: {
-                    image: friend.imgUrl,
-                    friendMail: friend.email,
-                    name: friend.name
+                  image: friend.imgUrl,
+                  friendMail: friend.email,
+                  name: friend.name
                 }
               });
               instance.$mount();
