@@ -61,40 +61,43 @@ export default {
           mangaDiv.removeChild(mangaDiv.firstChild);
         }
 
-        console.log(userDiv);
         this.userRequest.open("GET", this.url + this.user + "/profile", false);
         this.userRequest.onreadystatechange = function() {
           if (this.readyState === 4) {
             const user = JSON.parse(this.response);
-            console.log(user.manga_stats);
-            const instance = new userClass({
-              propsData: {
-                username: user.username,
-                about: user.about,
-                url: user.url,
-                image: user.image_url,
-                daysWatched: user.anime_stats.days_watched,
-                meanScoreAnime: user.anime_stats.mean_score,
-                watching: user.anime_stats.watching,
-                animeCompleted: user.anime_stats.completed,
-                animeOnHold: user.anime_stats.on_hold,
-                animeDropped: user.anime_stats.dropped,
-                planToWatch: user.anime_stats.plan_to_watch,
-                episodesWatched: user.anime_stats.episodes_watched,
-                daysRead: user.manga_stats.days_read,
-                meanScoreManga: user.manga_stats.mean_score,
-                reading: user.manga_stats.reading,
-                mangaCompleted: user.manga_stats.completed,
-                mangaOnHold: user.manga_stats.on_hold,
-                mangaDropped: user.manga_stats.dropped,
-                planToRead: user.manga_stats.plan_to_read,
-                chaptersRead: user.manga_stats.chapters_read,
-                volumesRead: user.manga_stats.volumes_read
-              }
-            });
-            instance.$mount();
-            userDiv.appendChild(instance.$el);
-          }
+            console.log(user);
+            // if (user.status === 200) {
+              const instance = new userClass({
+                propsData: {
+                  username: user.username,
+                  about: user.about,
+                  url: user.url,
+                  image: user.image_url,
+                  daysWatched: user.anime_stats.days_watched,
+                  meanScoreAnime: user.anime_stats.mean_score,
+                  watching: user.anime_stats.watching,
+                  animeCompleted: user.anime_stats.completed,
+                  animeOnHold: user.anime_stats.on_hold,
+                  animeDropped: user.anime_stats.dropped,
+                  planToWatch: user.anime_stats.plan_to_watch,
+                  episodesWatched: user.anime_stats.episodes_watched,
+                  daysRead: user.manga_stats.days_read,
+                  meanScoreManga: user.manga_stats.mean_score,
+                  reading: user.manga_stats.reading,
+                  mangaCompleted: user.manga_stats.completed,
+                  mangaOnHold: user.manga_stats.on_hold,
+                  mangaDropped: user.manga_stats.dropped,
+                  planToRead: user.manga_stats.plan_to_read,
+                  chaptersRead: user.manga_stats.chapters_read,
+                  volumesRead: user.manga_stats.volumes_read
+                }
+              });
+              instance.$mount();
+              userDiv.appendChild(instance.$el);
+            // } else {
+              window.alert("User wasn't found, Error code: " + user.status);
+            }
+          //}
         };
         this.userRequest.send();
 
@@ -123,6 +126,11 @@ export default {
                 instance.$mount();
                 animeDiv.appendChild(instance.$el);
               }
+            } else {
+              window.alert(
+                "Users animelist wasn't found, Error code: " +
+                  JSON.parse(this.response).status
+              );
             }
           }
         };
@@ -153,6 +161,11 @@ export default {
                 instance.$mount();
                 mangaDiv.appendChild(instance.$el);
               }
+            } else {
+              window.alert(
+                "Users mangalist wasn't found, Error code: " +
+                  JSON.parse(this.response).status
+              );
             }
           }
         };

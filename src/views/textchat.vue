@@ -131,7 +131,7 @@ export default {
   #textChat{
     overflow-y: scroll;
     height: 795px;
-    /*display: flex;*/
-    /*flex-direction: column-reverse;*/
+    padding-left: 10px;
+    padding-right: 10px;
   }
 </style>
